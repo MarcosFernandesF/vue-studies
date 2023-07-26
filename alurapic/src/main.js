@@ -14,6 +14,9 @@ Vue.use(VueRouter);
 import { routes }  from './routes';
 const router = new VueRouter({ routes });
 
+// Importando diretiva.
+import './directives/Transform.js'
+
 // View Instance.
 // el: Elemento em que será renderizado um template.
 // render: Qual template será renderizado.
