@@ -17,6 +17,9 @@ const router = new VueRouter({ routes });
 // Importando diretiva.
 import './directives/Transform.js'
 
+// Adotando como convenção para o http uma rota.
+Vue.http.options.root = "http://localhost:3000";
+
 // View Instance.
 // el: Elemento em que será renderizado um template.
 // render: Qual template será renderizado.

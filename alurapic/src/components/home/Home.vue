@@ -3,6 +3,8 @@
     <div>
         <!-- Para adicionar um texto também pode ser feito como: <h1 v-text="titulo"></h1> -->
         <h1 class="centralizado">{{ titulo }}</h1> 
+
+        <h2 class="centrazlizado"> {{ mensagem }} </h2>
         <!-- Com v-on o vue consegue escutar o evento de javascript -->
         <input type="search" class="filtro" v-on:input="filtro = $event.target.value" placeholder="Filtre por parte do titulo">
         <!-- Utilizando diretiva v-for para percorrer um array de fotos. -->
@@ -26,6 +28,7 @@
 import Painel from '../shared/painel/Painel.vue'
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue'
 import Botao from '../shared/botao/Botao.vue'
+import FotoService from '../../domain/foto/FotoService.js'
 
 export default {
     components: {
@@ -39,6 +42,7 @@ export default {
             titulo: "Alurapic",
             fotos: [],
             filtro: "",
+            mensagem: "",
         }
     },
 
@@ -55,15 +59,29 @@ export default {
     },
 
     methods: {
-        remove (foto) {
-            alert('Removendo a foto ' + foto.titulo);
+        remove(foto) {
+            this.service
+                .apaga(foto._id)
+                .then(
+                () => {
+                    let indice = this.fotos.indexOf(foto);
+                    this.fotos.splice(indice, 1);
+                    this.mensagem = 'Foto removida com sucesso'
+                }, 
+                err => {
+                    this.mensagem = 'Não foi possível remover a foto';
+                    console.log(err);
+                }
+                )
         }
-    },
 
-    // LifeCycle Hooks: Funções que são chamadas em determinados ciclos de vida de um componente.
+    },
     created() {
-        this.$http.get('http://localhost:3000/v1/fotos')
-            .then(res => res.json())
+        // criando uma instância do nosso serviço que depende de $resource
+        this.service = new FotoService(this.$resource);
+
+        this.service
+            .lista()
             .then(fotos => this.fotos = fotos, err => console.log(err));
     }
 }
