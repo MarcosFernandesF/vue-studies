@@ -20,6 +20,18 @@ import './directives/Transform.js'
 // Adotando como convenção para o http uma rota.
 Vue.http.options.root = "http://localhost:3000";
 
+// Importando VeeValidate e a lingua portuguesa para as mensagens.
+import msg from './pt_BR';
+import VeeValidate from 'vee-validate'
+Vue.use(VeeValidate, {
+	locale: 'pt_BR',
+	dictionary: {
+		pt_BR: {
+			messages: msg
+		}
+	}
+});
+
 // View Instance.
 // el: Elemento em que será renderizado um template.
 // render: Qual template será renderizado.
