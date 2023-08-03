@@ -4,7 +4,7 @@
         <!-- Para adicionar um texto também pode ser feito como: <h1 v-text="titulo"></h1> -->
         <h1 class="centralizado">{{ titulo }}</h1> 
 
-        <h2 class="centrazlizado"> {{ mensagem }} </h2>
+        <h2 class="centralizado"> {{ mensagem }} </h2>
         <!-- Com v-on o vue consegue escutar o evento de javascript -->
         <input type="search" class="filtro" v-on:input="filtro = $event.target.value" placeholder="Filtre por parte do titulo">
         <!-- Utilizando diretiva v-for para percorrer um array de fotos. -->
@@ -12,6 +12,12 @@
             <li class="lista-fotos-item" v-for="foto in fotosComFiltro">
                 <meu-painel :titulo="foto.titulo">
                     <imagem-responsiva v-meu-transform:scale.animate.reverse="1.1" :url="foto.url" :titulo="foto.titulo"/>
+                    <router-link :to="{ name: 'altera', params: { id: foto._id }}">
+                        <meu-botao 
+                            rotulo="Alterar"
+                            tipo="button"
+                        />
+                    </router-link>
                     <meu-botao 
                         tipo="button"
                         rotulo="REMOVER"
@@ -68,10 +74,7 @@ export default {
                     this.fotos.splice(indice, 1);
                     this.mensagem = 'Foto removida com sucesso'
                 }, 
-                err => {
-                    this.mensagem = 'Não foi possível remover a foto';
-                    console.log(err);
-                }
+                err => this.mensagem = err.message
                 )
         }
 
@@ -82,7 +85,7 @@ export default {
 
         this.service
             .lista()
-            .then(fotos => this.fotos = fotos, err => console.log(err));
+            .then(fotos => this.fotos = fotos, err => this.mensagem = err.message);
     }
 }
 </script>
