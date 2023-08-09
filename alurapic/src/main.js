@@ -20,6 +20,9 @@ import './directives/Transform.js'
 // Adotando como convenção para o http uma rota.
 Vue.http.options.root = "http://localhost:3000";
 
+// Importando bootstrap
+// import 'bootstrap/dist/css/bootstrap.css';
+
 // Importando VeeValidate e a lingua portuguesa para as mensagens.
 import msg from './pt_BR';
 import VeeValidate from 'vee-validate'
